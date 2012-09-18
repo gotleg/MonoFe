@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoFe", "MonoFe\MonoFe.csproj", "{5947698F-7D34-48FA-92CC-D1C98B057012}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5947698F-7D34-48FA-92CC-D1C98B057012}.Debug|x86.ActiveCfg = Debug|x86
+		{5947698F-7D34-48FA-92CC-D1C98B057012}.Debug|x86.Build.0 = Debug|x86
+		{5947698F-7D34-48FA-92CC-D1C98B057012}.Release|x86.ActiveCfg = Release|x86
+		{5947698F-7D34-48FA-92CC-D1C98B057012}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = MonoFe\MonoFe.csproj
+	EndGlobalSection
+EndGlobal
