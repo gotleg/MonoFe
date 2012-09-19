@@ -15,7 +15,7 @@ namespace MonoFe.GameStates
 	public class GS_Dashboard :IGameState
 	{
 		SdlDotNet.Graphics.Font fontNormal,fontLarge,fontXL,fontXXL;
-		double animationSpeed = 0.2;
+		double animationSpeed = Convert.ToDouble (ConfigurationSettings.AppSettings["StarsAnimationSpeed"]);
 		int currentEmulator;
 		string[] emulators = new string[2];
 		Surface _sfTitle;
@@ -67,7 +67,6 @@ namespace MonoFe.GameStates
 		{
 			sfError = new Surface(new Size(1,1));
 			sfErrorBackground = new Surface(new Size(1,1));
-
 			try {
 				changeGame = new Sound (ConfigurationSettings.AppSettings["ChangeGameSound"]);
 				changeEmulator = new Sound (ConfigurationSettings.AppSettings["ChangeEmulatorSound"]);
