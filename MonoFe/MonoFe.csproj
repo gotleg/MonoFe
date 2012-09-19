@@ -32,34 +32,106 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="Mono.Posix, Version=2.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756" />
-    <Reference Include="gtk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
-    <Reference Include="gdk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
-    <Reference Include="glib-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
-    <Reference Include="glade-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
-    <Reference Include="pango-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
-    <Reference Include="atk-sharp, Version=2.12.0.0, Culture=neutral, PublicKeyToken=35e10195dab3c99f" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="SdlDotNet">
+      <HintPath>..\..\..\..\..\..\Program Files %28x86%29\SdlDotNet\bin\SdlDotNet.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="gtk-gui\gui.stetic">
-      <LogicalName>gui.stetic</LogicalName>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="gtk-gui\generated.cs" />
-    <Compile Include="MainWindow.cs" />
-    <Compile Include="gtk-gui\MainWindow.cs" />
-    <Compile Include="Main.cs" />
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="GameParser.cs" />
+    <Compile Include="Main.cs" />
+    <Compile Include="ScreenManager.cs" />
+    <Compile Include="GameStates\GameStateManager.cs" />
+    <Compile Include="GameStates\GS_ColoredBackground.cs" />
+    <Compile Include="GameStates\GS_Dashboard.cs" />
+    <Compile Include="GameStates\IGameState.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Fonts\DIMITRI_.TTF" />
+    <None Include="Image\background.png" />
+    <None Include="Image\logo.png" />
+    <None Include="Image\logo2.png" />
+    <None Include="Image\logo_.png" />
+    <None Include="Sound\change_emulator.wav" />
+    <None Include="Sound\change_game.wav" />
+    <None Include="Roms\Mame\dkong.zip" />
+    <None Include="Roms\Mame\dkong3.zip" />
+    <None Include="Roms\Mame\galaga88.zip" />
+    <None Include="Roms\Mame\gradius.zip" />
+    <None Include="Roms\Mame\gradius2.zip" />
+    <None Include="Roms\Mame\gradius3.zip" />
+    <None Include="Roms\Mame\kof95.zip" />
+    <None Include="Roms\Mame\kof96.zip" />
+    <None Include="Roms\Mame\kof98.zip" />
+    <None Include="Roms\Mame\kof99.zip" />
+    <None Include="Roms\Mame\mslug.zip" />
+    <None Include="Roms\Mame\mslug2.zip" />
+    <None Include="Roms\Mame\sf2ce.zip" />
+    <None Include="Roms\SNES\3 Ninjas Kick Back %28USA%29.zip" />
+    <None Include="Roms\SNES\7th Saga, The %28USA%29.zip" />
+    <None Include="Roms\SNES\90 Minutes - European Prime Goal %28Europe%29.zip" />
+    <None Include="Roms\SNES\2020 Super Baseball %28USA%29.zip" />
+    <None Include="Roms\SNES\AAAHH!!! Real Monsters %28USA%29.zip" />
+    <None Include="Roms\SNES\ABC Monday Night Football %28USA%29.zip" />
+    <None Include="Roms\SNES\ACME Animation Factory %28USA%29.zip" />
+    <None Include="Roms\SNES\ActRaiser 2 %28USA%29.zip" />
+    <None Include="Roms\SNES\ActRaiser %28USA%29.zip" />
+    <None Include="Roms\SNES\Addams Family Values %28USA%29 %28En,Fr,De%29.zip" />
+    <None Include="Roms\SNES\Addams Family, The - Pugsley%27s Scavenger Hunt %28USA%29.zip" />
+    <None Include="Roms\SNES\Addams Family, The %28USA%29.zip" />
+    <None Include="Roms\SNES\Adventures of Batman &amp; Robin, The %28USA%29.zip" />
+    <None Include="Roms\SNES\Adventures of Dr. Franken, The %28USA%29.zip" />
+    <None Include="Roms\SNES\Adventures of Kid Kleets, The %28USA%29 %28En,Fr,Es%29.zip" />
+    <None Include="Roms\SNES\Adventures of Rocky and Bullwinkle and Friends, The %28USA%29.zip" />
+    <None Include="Roms\SNES\Adventures of Tintin, The - Prisoners of the Sun %28Europe%29 %28En,Fr,De,Es%29.zip" />
+    <None Include="Roms\SNES\Adventures of Yogi Bear %28USA%29.zip" />
+    <None Include="GameInfos\MameTitles\dkong.png" />
+    <None Include="GameInfos\MameTitles\dkong3.png" />
+    <None Include="GameInfos\MameTitles\galaga88.png" />
+    <None Include="GameInfos\MameTitles\gradius.png" />
+    <None Include="GameInfos\MameTitles\gradius2.png" />
+    <None Include="GameInfos\MameTitles\gradius3.png" />
+    <None Include="GameInfos\MameTitles\kof95.png" />
+    <None Include="GameInfos\MameTitles\kof96.png" />
+    <None Include="GameInfos\MameTitles\kof98.png" />
+    <None Include="GameInfos\MameTitles\mslug.png" />
+    <None Include="GameInfos\MameTitles\mslug2.png" />
+    <None Include="GameInfos\MameTitles\sf2ce.png" />
+    <None Include="GameInfos\SnesTitles\3 Ninjas Kick Back %28USA%29.png" />
+    <None Include="GameInfos\SnesTitles\7th Saga, The %28USA%29.png" />
+    <None Include="GameInfos\SnesTitles\90 Minutes - European Prime Goal %28Europe%29.png" />
+    <None Include="GameInfos\SnesTitles\2020 Super Baseball %28USA%29.png" />
+    <None Include="GameInfos\SnesTitles\AAAHH!!! Real Monsters %28USA%29.png" />
+    <None Include="GameInfos\SnesTitles\ABC Monday Night Football %28USA%29.png" />
+    <None Include="GameInfos\SnesTitles\ACME Animation Factory %28USA%29.png" />
+    <None Include="GameInfos\SnesTitles\ActRaiser 2 %28USA%29.png" />
+    <None Include="GameInfos\SnesTitles\ActRaiser %28USA%29.png" />
+    <None Include="GameInfos\SnesTitles\Addams Family Values %28USA%29 %28En,Fr,De%29.png" />
+    <None Include="GameInfos\SnesTitles\Addams Family, The - Pugsley%27s Scavenger Hunt %28USA%29.png" />
+    <None Include="GameInfos\SnesTitles\Addams Family, The %28USA%29.png" />
+    <None Include="GameInfos\SnesTitles\Adventures of Batman &amp; Robin, The %28USA%29.png" />
+    <None Include="GameInfos\SnesTitles\Adventures of Dr. Franken, The %28USA%29.png" />
+    <None Include="GameInfos\SnesTitles\Adventures of Kid Kleets, The %28USA%29 %28En,Fr,Es%29.png" />
+    <None Include="GameInfos\SnesTitles\Adventures of Rocky and Bullwinkle and Friends, The %28USA%29.png" />
+    <None Include="GameInfos\SnesTitles\Adventures of Tintin, The - Prisoners of the Sun %28Europe%29 %28En,Fr,De,Es%29.png" />
+    <None Include="GameInfos\SnesTitles\Adventures of Yogi Bear %28USA%29.png" />
+    <None Include="GameInfos\MAME.txt" />
+    <None Include="GameInfos\SNES.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <None Include="app.config" />
-    <None Include="GameInfos\MAME.txt" />
-  </ItemGroup>
-  <ItemGroup>
+    <Folder Include="Fonts\" />
     <Folder Include="GameInfos\" />
+    <Folder Include="GameStates\" />
+    <Folder Include="Image\" />
+    <Folder Include="Sound\" />
+    <Folder Include="Roms\" />
+    <Folder Include="Roms\Mame\" />
+    <Folder Include="Roms\SNES\" />
+    <Folder Include="GameInfos\MameTitles\" />
+    <Folder Include="GameInfos\SnesTitles\" />
   </ItemGroup>
 </Project>

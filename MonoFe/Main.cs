@@ -1,23 +1,34 @@
 using System;
-using Gtk;
-using System.Configuration;
-using System.Collections.Generic;
+using System.Drawing;
+using SdlDotNet;
+using SdlDotNet.Core;
+using SdlDotNet.Graphics;
+using SdlDotNet.Graphics.Sprites;
+using SdlDotNet.Input;
+using MonoFe.GameStates;
+using SdlDotNet.Particles;
 
-namespace MyFe
+namespace MonoFe
 {
 	class MainClass
 	{
 		public static void Main (string[] args)
 		{
-			Application.Init ();
-			MainWindow win = new MainWindow ();
-			if (ConfigurationSettings.AppSettings ["Fullscreen"] == "true") {
-				win.Fullscreen ();
+			// Initialisation de la zone d'affichage
+			ScreenManager.Init();
+			// Chargement de l'état initial
+			GameStateManager.ChangeState(new GS_Dashboard());
+			ParticlePixel pp = new ParticlePixel();
+
+			// Boucle principale
+			while(GameStateManager.Running)
+			{
+				GameStateManager.CheckState();
+				GameStateManager.HandleEvents();
+				GameStateManager.Update();
+				GameStateManager.Draw();
+				ScreenManager.MainScreen.Update();
 			}
-			win.Show ();
-			Application.Run ();
 		}
-
-
 	}
 }

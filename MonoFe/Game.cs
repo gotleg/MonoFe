@@ -1,19 +1,20 @@
 using System;
 
-namespace MyFe
+namespace MonoFe
 {
 	public class Game
 	{
-		private string _gameName;
-		private string _plateform;
-		private string _crc;
-		private string _genre;
-		private string _year;
-		private string _developer;
-		private string _filename;
-		private string _screenOrientation;
-		private string _control;
-		private string _players;
+		private string _gameName = "";
+		private string _plateform = "";
+		private string _crc = "";
+		private string _genre = "";
+		private string _year = "";
+		private string _developer = "";
+		private string _filename = "";
+		private string _screenOrientation = "";
+		private string _control = "";
+		private string _players = "";
+		private string _region = "";
 
 		#region get/set
 		public string gameName {
@@ -86,6 +87,13 @@ namespace MyFe
 			
 			set { _players = value;}
 		}
+		public string region {
+			get {
+				return _region;
+			}
+			
+			set { _region = value;}
+		}
 		#endregion
 		public Game()
 		{
@@ -105,36 +113,6 @@ namespace MyFe
 			_players = 	players;
 		}
 		*/
-	}
-
-	[Gtk.TreeNode (ListOnly=true)]
-	public class GameTreeNode : Gtk.TreeNode
-	{
-		
-		string gameName;
-		string gameYear;
-		string gameGenre;
-		string gameFileName;
-		
-		public GameTreeNode (string name, string year, string genre, string fileName)
-		{
-			this.gameName = name;
-			this.gameYear = year;
-			this.gameGenre = genre;
-			this.gameFileName = fileName;
-		}
-		
-		[Gtk.TreeNodeValue (Column=0)]
-		public string Game { get { return gameName; } }
-		
-		[Gtk.TreeNodeValue (Column=1)]
-		public string Year { get { return gameYear; } }
-
-		[Gtk.TreeNodeValue (Column=2)]
-		public string Genre { get { return gameGenre; } }
-
-		[Gtk.TreeNodeValue (Column=3)]
-		public string FileName { get { return gameFileName; } }
 	}
 }
 
