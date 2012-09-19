@@ -36,6 +36,7 @@ namespace MonoFe.GameStates
 		List<Surface> itemList = new List<Surface>();
 		Sound changeGame ;
 		Sound changeEmulator;
+		Sound music;
 		bool displayError;
 		string errorMessage = "";
 		float[] starsX = new float[512];
@@ -65,14 +66,18 @@ namespace MonoFe.GameStates
 
 		public void Init ()
 		{
-			sfError = new Surface(new Size(1,1));
-			sfErrorBackground = new Surface(new Size(1,1));
+			sfError = new Surface (new Size (1, 1));
+			sfErrorBackground = new Surface (new Size (1, 1));
 			try {
-				changeGame = new Sound (ConfigurationSettings.AppSettings["ChangeGameSound"]);
-				changeEmulator = new Sound (ConfigurationSettings.AppSettings["ChangeEmulatorSound"]);
+				changeGame = new Sound (ConfigurationSettings.AppSettings ["ChangeGameSound"]);
+				changeEmulator = new Sound (ConfigurationSettings.AppSettings ["ChangeEmulatorSound"]);
+				music = new Sound (ConfigurationSettings.AppSettings["MusicSound"]);
 			} catch (Exception ex) {
 				displayError = true;
 				errorMessage += "Problem loading sounds, file may be missing... \n";
+			}
+			if (ConfigurationSettings.AppSettings ["PlayMusic"] == "true") {
+				music.Play(true);
 			}
 			time = SdlDotNet.Core.Timer.TicksElapsed;
 			emulators[0] = "Mame";

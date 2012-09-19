@@ -120,6 +120,7 @@
     <None Include="GameInfos\SnesTitles\Adventures of Yogi Bear %28USA%29.png" />
     <None Include="GameInfos\MAME.txt" />
     <None Include="GameInfos\SNES.txt" />
+    <None Include="Sound\music.wav" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
