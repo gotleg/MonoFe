@@ -53,7 +53,7 @@ namespace MonoFe.GameStates
 		int currentIndex;
 		int displayedItems = 20;
 		int startX = 20;
-		int startY = 280;
+		int startY = 300;
 		int lineSpacing = 30;
 		int time=0;
 		Random rand;
@@ -94,15 +94,15 @@ namespace MonoFe.GameStates
 			_ptTitle.X = (ScreenManager.ScreenSize.Width - 
 				_sfTitle.Width) / 2;
 			_ptTitle.Y = 10;
-			//sfBackgroundImage = new Surface(ConfigurationSettings.AppSettings["BackgroundImage"]);
+			sfBackgroundImage = new Surface(ConfigurationSettings.AppSettings["BackgroundImage"]);
 			currentIndex = 0;
 			// We load the mame game list
 			switchEmulator();
 
-			fontNormal = new SdlDotNet.Graphics.Font (@"C:\Users\Got\Documents\Projects\MonoFe\MonoFe\Fonts\DIMITRI_.TTF", 22);
-			fontLarge = new SdlDotNet.Graphics.Font (@"C:\Users\Got\Documents\Projects\MonoFe\MonoFe\Fonts\DIMITRI_.TTF", 26);
-			fontXL = new SdlDotNet.Graphics.Font (@"C:\Users\Got\Documents\Projects\MonoFe\MonoFe\Fonts\DIMITRI_.TTF", 32);
-			fontXXL = new SdlDotNet.Graphics.Font (@"C:\Users\Got\Documents\Projects\MonoFe\MonoFe\Fonts\DIMITRI_.TTF", 44);
+			fontNormal = new SdlDotNet.Graphics.Font (ConfigurationSettings.AppSettings["FontFile"], 22);
+			fontLarge = new SdlDotNet.Graphics.Font (ConfigurationSettings.AppSettings["FontFile"], 26);
+			fontXL = new SdlDotNet.Graphics.Font (ConfigurationSettings.AppSettings["FontFile"], 32);
+			fontXXL = new SdlDotNet.Graphics.Font (ConfigurationSettings.AppSettings["FontFile"], 44);
 			//init starfield
 			for (int i=0;i<512;i++)
 			{
@@ -126,54 +126,66 @@ namespace MonoFe.GameStates
 
 			//Clear screen (not very clean, must find a better way)
 			ScreenManager.MainScreen.Fill (Color.Black);
-			pixels.Fill (Color.Black);
-			lstPixels.Clear ();
-			//First draw the stars background
-			for (int i=0; i<512; i++) {
-
-				//move the star closer
-				starsZ [i] = (float)(starsZ [i] - (starsZV [i] * animationSpeed));
-
-				if ((starsScreenX [i] < 0 ||
-					starsScreenX [i] > ScreenManager.MainScreen.Width ||
-					starsScreenY [i] < 0 ||
-					starsScreenY [i] > ScreenManager.MainScreen.Height) ||
-					starsZ [i] < 1) {
-					starsX [i] = rand.Next (-1000, 1000);
-					starsY [i] = rand.Next (-1000, 1000);
-					starsZ [i] = rand.Next (400, 1000);
-					starsZV [i] = rand.Next (1, 8);
+			if (ConfigurationSettings.AppSettings ["AnimatedStarsBackground"] == "true") {
+				//First draw the stars background
+				pixels.Fill (Color.Black);
+				lstPixels.Clear ();
+				for (int i=0; i<512; i++) {
+					
+					//move the star closer
+					starsZ [i] = (float)(starsZ [i] - (starsZV [i] * animationSpeed));
+					
+					if ((starsScreenX [i] < 0 ||
+						starsScreenX [i] > ScreenManager.MainScreen.Width ||
+						starsScreenY [i] < 0 ||
+						starsScreenY [i] > ScreenManager.MainScreen.Height) ||
+						starsZ [i] < 1) {
+						starsX [i] = rand.Next (-1000, 1000);
+						starsY [i] = rand.Next (-1000, 1000);
+						starsZ [i] = rand.Next (400, 1000);
+						starsZV [i] = rand.Next (1, 8);
+					}
+					
+					//calculate screen coordinates
+					starsScreenX [i] = Convert.ToInt32 (starsX [i] / starsZ [i] * 100 + (ScreenManager.MainScreen.Width / 2));
+					starsScreenY [i] = Convert.ToInt32 (starsY [i] / starsZ [i] * 100 + (ScreenManager.MainScreen.Height / 2));
+					string hexStarsColors = ConfigurationSettings.AppSettings ["HexaRGBStarsColor"];
+					string hexR = hexStarsColors.Substring (0, 2);
+					string hexG = hexStarsColors.Substring (2, 2);
+					string hexB = hexStarsColors.Substring (4, 2);
+					
+					double maxR = Convert.ToDouble (int.Parse (hexR, System.Globalization.NumberStyles.HexNumber));
+					double maxV = Convert.ToDouble (int.Parse (hexG, System.Globalization.NumberStyles.HexNumber));
+					double maxB = Convert.ToDouble (int.Parse (hexB, System.Globalization.NumberStyles.HexNumber));
+					double maxRVB = 255;
+					double ratioR = maxR / maxRVB;
+					double ratioV = maxV / maxRVB;
+					double ratioB = maxB / maxRVB;
+					int colorR = Convert.ToInt32 (maxR - (ratioR * ((int)starsZ [i] * 0.255)));
+					int colorV = Convert.ToInt32 (maxV - (ratioV * ((int)starsZ [i] * 0.255)));
+					int colorB = Convert.ToInt32 (maxB - (ratioB * (int)starsZ [i] * 0.255));
+					//180-240-255
+					ParticlePixel pp = new ParticlePixel (Color.FromArgb (colorR, colorV, colorB), starsScreenX [i], starsScreenY [i]);
+					pp.Render (pixels);
+					lstPixels.Add (pp);
 				}
-
-				//calculate screen coordinates
-				starsScreenX [i] = Convert.ToInt32 (starsX [i] / starsZ [i] * 100 + (ScreenManager.MainScreen.Width / 2));
-				starsScreenY [i] = Convert.ToInt32 (starsY [i] / starsZ [i] * 100 + (ScreenManager.MainScreen.Height / 2));
-				string hexStarsColors = ConfigurationSettings.AppSettings["HexaRGBStarsColor"];
-				string hexR = hexStarsColors.Substring(0,2);
-				string hexG = hexStarsColors.Substring(2,2);
-				string hexB = hexStarsColors.Substring(4,2);
-
-				double maxR = Convert.ToDouble(int.Parse(hexR,System.Globalization.NumberStyles.HexNumber));
-				double maxV = Convert.ToDouble(int.Parse(hexG,System.Globalization.NumberStyles.HexNumber));
-				double maxB = Convert.ToDouble(int.Parse(hexB,System.Globalization.NumberStyles.HexNumber));
-				double maxRVB = 255;
-				double ratioR = maxR/maxRVB;
-				double ratioV = maxV/maxRVB;
-				double ratioB = maxB/maxRVB;
-				int colorR = Convert.ToInt32 (maxR -(ratioR*((int)starsZ [i] * 0.255)));
-				int colorV = Convert.ToInt32 (maxV - (ratioV*((int)starsZ [i] * 0.255)));
-				int colorB = Convert.ToInt32 (maxB - (ratioB*(int)starsZ [i] * 0.255));
-				//180-240-255
-				ParticlePixel pp = new ParticlePixel (Color.FromArgb (colorR, colorV, colorB), starsScreenX [i], starsScreenY [i]);
-				pp.Render (pixels);
-				lstPixels.Add (pp);
+				ScreenManager.MainScreen.Blit (pixels, new Point (0, 0));
+			} else {
+				ScreenManager.MainScreen.Blit (sfBackgroundImage, new Point (0, 0));
 			}
-			ScreenManager.MainScreen.Blit (pixels, new Point (0, 0));
-			//ScreenManager.MainScreen.Blit (sfBackgroundImage,new Point (0,0 ));
-			ScreenManager.MainScreen.Blit (_sfTitle, _ptTitle);
 
-			sfPlatefromName = fontXXL.Render (emulators [currentEmulator], Color.White);
-			ScreenManager.MainScreen.Blit (sfPlatefromName, new Point (Convert.ToInt32 ((ScreenManager.MainScreen.Width - sfPlatefromName.Width) / 2), 200));
+			ScreenManager.MainScreen.Blit (_sfTitle, _ptTitle);
+			switch (currentEmulator)
+			{
+			case 0:
+				sfPlatefromName = new Surface(ConfigurationSettings.AppSettings["MameLogo"]);
+				break;
+			case 1:
+				sfPlatefromName = new Surface(ConfigurationSettings.AppSettings["SnesLogo"]);
+				break;
+			}
+			//sfPlatefromName = fontXXL.Render (emulators [currentEmulator], Color.White);
+			ScreenManager.MainScreen.Blit (sfPlatefromName, new Point (Convert.ToInt32 ((ScreenManager.MainScreen.Width - sfPlatefromName.Width) / 2), 150));
 
 			int currentGame = 0;
 			foreach (Surface s in itemList) {
@@ -192,9 +204,9 @@ namespace MonoFe.GameStates
 						sfGameName = fontXL.Render (g.gameName, Color.White);
 						sfGameGenre = fontNormal.Render (g.genre, Color.White);
 						sfGameDeveloperYear = fontNormal.Render (g.developer + " " + g.year, Color.White);
-						ScreenManager.MainScreen.Blit (sfGameName, new Point (ScreenManager.MainScreen.Width - (sfGameName.Width + 20), 274));
-						ScreenManager.MainScreen.Blit (sfGameGenre, new Point (ScreenManager.MainScreen.Width - (sfGameGenre.Width + 20), 310));
-						ScreenManager.MainScreen.Blit (sfGameDeveloperYear, new Point (ScreenManager.MainScreen.Width - (sfGameDeveloperYear.Width + 20), 340));
+						ScreenManager.MainScreen.Blit (sfGameName, new Point (ScreenManager.MainScreen.Width - (sfGameName.Width + 20), 294));
+						ScreenManager.MainScreen.Blit (sfGameGenre, new Point (ScreenManager.MainScreen.Width - (sfGameGenre.Width + 20), 330));
+						ScreenManager.MainScreen.Blit (sfGameDeveloperYear, new Point (ScreenManager.MainScreen.Width - (sfGameDeveloperYear.Width + 20), 360));
 						ScreenManager.MainScreen.Blit (itemList [currentGame - currentIndex], new Point (startX, startY + ((currentGame - currentIndex) * lineSpacing) - 2));
 
 						//Load image
@@ -203,13 +215,13 @@ namespace MonoFe.GameStates
 						FileInfo[] rgFiles;
 						switch (currentEmulator) {
 						case 0:
-							di = new DirectoryInfo (ConfigurationSettings.AppSettings ["MameTitleImage"]);
+							di = new DirectoryInfo (ConfigurationSettings.AppSettings ["MameCovers"]);
 
 							try {
 								rgFiles = di.GetFiles (g.filename + ".png");
 								if (rgFiles.Length > 0) {
-									sfGameImage = new Surface (ConfigurationSettings.AppSettings ["MameTitleImage"] + "\\" + g.filename + ".png");
-									ScreenManager.MainScreen.Blit (sfGameImage, new Point (ScreenManager.MainScreen.Width - (sfGameImage.Width + 20), 390));
+									sfGameImage = new Surface (ConfigurationSettings.AppSettings ["MameCovers"] + "\\" + g.filename + ".png");
+									ScreenManager.MainScreen.Blit (sfGameImage, new Point (ScreenManager.MainScreen.Width - (sfGameImage.Width + 20), 420));
 								}
 							} catch (Exception ex) {
 								
@@ -217,13 +229,13 @@ namespace MonoFe.GameStates
 
 							break;
 						case 1:
-							di = new DirectoryInfo (ConfigurationSettings.AppSettings ["SnesTitleImage"]);
+							di = new DirectoryInfo (ConfigurationSettings.AppSettings ["SnesCovers"]);
 							if (!string.IsNullOrEmpty (g.gameName) && !string.IsNullOrEmpty (g.region)) {
 								try {
 									rgFiles = di.GetFiles (g.gameName + " (" + g.region + ").png");
 									if (rgFiles.Length > 0) {
-										sfGameImage = new Surface (ConfigurationSettings.AppSettings ["SnesTitleImage"] + "\\" + g.gameName + " (" + g.region + ").png");
-										ScreenManager.MainScreen.Blit (sfGameImage, new Point (ScreenManager.MainScreen.Width - (sfGameImage.Width + 20), 390));
+										sfGameImage = new Surface (ConfigurationSettings.AppSettings ["SnesCovers"] + "\\" + g.gameName + " (" + g.region + ").png");
+										ScreenManager.MainScreen.Blit (sfGameImage, new Point (ScreenManager.MainScreen.Width - (sfGameImage.Width + 20), 420));
 									}
 								} catch (Exception ex) {
 									//file does not exists
