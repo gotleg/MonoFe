@@ -18,7 +18,6 @@ namespace MonoFe
 			ScreenManager.Init();
 			// Chargement de l'état initial
 			GameStateManager.ChangeState(new GS_Dashboard());
-			ParticlePixel pp = new ParticlePixel();
 
 			// Boucle principale
 			while(GameStateManager.Running)

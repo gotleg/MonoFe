@@ -2,6 +2,9 @@ using System;
 
 namespace MonoFe.GameStates
 {
+	/// <summary>
+	/// I game state.
+	/// </summary>
 	public interface IGameState
 	{
 		void Init();
